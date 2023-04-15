@@ -1,11 +1,16 @@
-import propTypes from 'prop-types';
+// import propTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { Input, FormInput, AddButton } from './ContactForm.styled';
-import { nanoid } from 'nanoid';
+import { addContacts } from '../../redux/contactsSlice';
+// import { nanoid } from 'nanoid';
 
 const initialValues = { name: '', number: '' };
 
-export const ContactForm = ({ onSubmit, contacts }) => {
+export const ContactForm = () => {
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
+
   const handleSubmit = (values, { resetForm }) => {
     const newName = values.name;
     if (
@@ -18,10 +23,11 @@ export const ContactForm = ({ onSubmit, contacts }) => {
       return;
     }
 
-    onSubmit({
-      id: nanoid(),
-      ...values,
-    });
+    dispatch(addContacts(values));
+    // onSubmit({
+    //   id: nanoid(),
+    //   ...values,
+    // });
 
     resetForm();
   };
@@ -58,6 +64,6 @@ export const ContactForm = ({ onSubmit, contacts }) => {
   );
 };
 
-ContactForm.propTypes = {
-  onSubmit: propTypes.func.isRequired,
-};
+// ContactForm.propTypes = {
+//   onSubmit: propTypes.func.isRequired,
+// };
